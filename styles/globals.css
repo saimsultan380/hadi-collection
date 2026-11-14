@@ -1,0 +1,195 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+/* =============================================================================
+   HADI COLLECTION GLOBAL STYLES
+   Pure white ground, espresso type, antique gold accents.
+   ============================================================================= */
+
+:root {
+  --color-white: #ffffff;
+  --color-black: #2c2118;
+  --color-espresso: #2c2118;
+  --color-ivory: #ffffff;
+  --color-surface: #f5f5f5;
+  --color-border: #e8e8e8;
+  --color-taupe: #7a6858;
+  --color-secondary: #7a6858;
+  --color-terracotta: #a6843d;
+  --color-terracotta-dark: #7a5e2a;
+  --color-paper: #ffffff;
+}
+
+@layer base {
+  /* Base resets & smooth rendering */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: #e8e8e8;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: #2c2118;
+    font-family: var(--font-sans), "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Headings: Clean, modern, 600 weight, 0.02em letter-spacing */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display), "Times New Roman", serif;
+    color: #2c2118;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  /* Default link reset */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Images & video: 8px border-radius standard */
+  img:not(.rounded-full):not([data-no-radius]),
+  video:not(.rounded-full):not([data-no-radius]) {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 14px;
+  }
+
+  /* Form inputs, buttons & fields: 8px border-radius standard */
+  input:not([type="checkbox"]):not([type="radio"]):not(.rounded-full),
+  button:not(.rounded-full),
+  select,
+  textarea {
+    border-radius: 14px;
+    font-family: inherit;
+  }
+}
+
+/* Universal 8px border-radius standard for form controls and buttons */
+input:not([type="checkbox"]):not([type="radio"]):not(.rounded-full),
+button:not(.rounded-full),
+select,
+textarea {
+  border-radius: 14px;
+}
+
+/* Focus ring — accessible accent */
+:focus-visible {
+  outline: 2px solid #a6843d;
+  outline-offset: 1px;
+}
+
+@keyframes heroDrift {
+  0% {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe\:animate-\[heroDrift_18s_ease-in-out_infinite_alternate\] {
+    animation: none !important;
+  }
+}
+
+/* Continuous Marquee Ticker Animation */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 90s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Category Tile Hover & Focus-Visible Image Swap */
+@media (hover: hover) and (pointer: fine) {
+  .category-tile:hover .category-tile-hover-image,
+  .category-tile:focus-visible .category-tile-hover-image {
+    opacity: 1;
+  }
+}
+
+/* Category Tile "Shop Now" CTA + hover shade.
+   Both hidden by default (opacity 0 + pointer-events none). The CTA is also
+   nudged 6px below the image centre and slides up to sit exactly centred.
+   Revealed on pointer hover (desktop only), on keyboard :focus-visible, and
+   during the touch press-and-hold preview (the component adds .is-visible). */
+.category-tile-shop-now {
+  opacity: 0;
+  transform: translate(-50%, calc(-50% + 6px));
+  pointer-events: none;
+  transition: opacity 300ms ease-out, transform 300ms ease-out,
+    background-color 200ms ease-out;
+}
+
+.category-tile-shade {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease-out;
+}
+
+.category-tile:focus-visible .category-tile-shop-now,
+.category-tile-shop-now.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.category-tile:focus-visible .category-tile-shade,
+.category-tile-shade.is-visible {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .category-tile:hover .category-tile-shop-now {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+  }
+
+  .category-tile:hover .category-tile-shade {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-tile-hover-image,
+  .category-tile-shop-now,
+  .category-tile-shade {
+    transition: none !important;
+  }
+}
+

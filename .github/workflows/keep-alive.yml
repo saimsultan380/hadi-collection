@@ -1,0 +1,49 @@
+name: Supabase Database Keep-Alive
+
+# =============================================================================
+# SAZAIRA — SUPABASE DATABASE KEEP-ALIVE WORKFLOW
+# =============================================================================
+# Supabase free-tier projects automatically pause after 7 consecutive days of
+# zero activity.
+#
+# This GitHub Actions workflow runs every 3 days (at 04:00 UTC) and sends an HTTP
+# GET request to the /api/health route. The health route makes a lightweight read
+# query on the Supabase `orders` table, keeping the PostgreSQL instance warm and
+# active at all times.
+#
+# NOTE ON DEPLOYMENT:
+# Once you deploy Sazaira (e.g. to Vercel), set the SITE_URL secret or repository
+# variable to your production domain (e.g. https://sazaira.pk).
+# Before deployment, local development requests and manual testing count as activity.
+# =============================================================================
+
+on:
+  schedule:
+    # Runs every 3 days at 04:00 UTC
+    - cron: "0 4 */3 * *"
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  ping-health-check:
+    name: Ping Sazaira Health Endpoint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Keep-Alive Endpoint
+        run: |
+          # Use configured SITE_URL or fallback to default domain
+          TARGET_URL="${{ secrets.SITE_URL || vars.SITE_URL || 'https://sazaira.pk' }}/api/health"
+          echo "Sending keep-alive ping to: $TARGET_URL"
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" "$TARGET_URL")
+          HTTP_BODY=$(echo "$RESPONSE" | sed '$d')
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+
+          echo "Response Status: $HTTP_STATUS"
+          echo "Response Body: $HTTP_BODY"
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 400 ]; then
+            echo "Keep-alive ping succeeded. Supabase activity refreshed."
+          else
+            echo "Warning: Keep-alive endpoint returned HTTP status $HTTP_STATUS."
+          fi

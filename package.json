@@ -1,0 +1,47 @@
+{
+  "name": "hadi-collection",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "check-data": "npx tsx scripts/check-data.ts",
+    "build": "npm run check-data && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "remove-demo": "npx tsx scripts/remove-demo-products.ts",
+    "remove-demo:dry": "npx tsx scripts/remove-demo-products.ts --dry-run",
+    "remove-demo-products": "npx tsx scripts/remove-demo-products.ts",
+    "remove-demo-products:dry": "npx tsx scripts/remove-demo-products.ts --dry-run",
+    "compress-images": "node scripts/compress-images.mjs"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
+    "@supabase/supabase-js": "^2.116.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.45.0",
+    "next": "^16.3.8",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hook-form": "^7.88.0",
+    "react-is": "^19.3.0",
+    "sharp": "^0.35.4",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.6.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.25",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
