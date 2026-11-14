@@ -295,13 +295,13 @@ export function MobileNavDrawer({
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className={`relative z-10 flex h-full h-[100dvh] w-[88%] max-w-[400px] flex-col border-r border-[#E5E5E5] bg-white shadow-none transition-transform duration-250 ease-out motion-reduce:transition-none pt-[env(safe-area-inset-top,0px)] ${
+        className={`relative z-10 flex h-full max-h-[100dvh] w-[88%] max-w-[400px] flex-col overflow-hidden border-r border-[#E5E5E5] bg-white shadow-none transition-transform duration-250 ease-out motion-reduce:transition-none pt-[env(safe-area-inset-top,0px)] ${
           isVisible ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Header Row: Logo + "SAZAIRA" on left, 44px tap target X close on right, 1px divider below */}
-        <div className="flex h-14 min-h-[56px] shrink-0 items-center justify-between border-b border-[#E5E5E5] px-5">
-          <div onClick={onClose} className="cursor-pointer">
+        {/* Header Row: Logo + close — fixed, sized so the mark is never clipped */}
+        <div className="flex min-h-[68px] shrink-0 items-center justify-between border-b border-[#E5E5E5] px-5 py-3">
+          <div onClick={onClose} className="flex min-h-[44px] cursor-pointer items-center">
             <Logo size="sm" />
           </div>
 
@@ -310,30 +310,31 @@ export function MobileNavDrawer({
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center -mr-2 text-black hover:opacity-70 transition-opacity rounded-[8px] focus-visible:ring-1 focus-visible:ring-black focus-visible:outline-none"
+            className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center -mr-2 text-black hover:opacity-70 transition-opacity rounded-full focus-visible:ring-1 focus-visible:ring-black focus-visible:outline-none"
           >
             <X className="h-5 w-5 stroke-[1.5]" />
           </button>
         </div>
 
-        {/* Search: Roomy quick search entry (16px spacing above and below) */}
-        <div className="shrink-0 px-5 py-4 border-b border-[#E5E5E5]">
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              onOpenSearch();
-            }}
-            aria-label="Search suits"
-            className="flex h-11 min-h-[44px] w-full items-center gap-3 border border-[#E5E5E5] bg-[#FAF8F5] px-3.5 font-sans text-[12px] font-medium tracking-[0.08em] uppercase text-[#6B6B6B] hover:border-black hover:text-black transition-colors rounded-[8px] focus-visible:ring-1 focus-visible:ring-black focus-visible:outline-none"
-          >
-            <Search className="h-4 w-4 stroke-[1.5]" />
-            <span>Search suits...</span>
-          </button>
-        </div>
+        {/* Single scrollable column: search + nav + bottom actions */}
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain [scrollbar-gutter:stable] [scrollbar-width:thin] [scrollbar-color:#C4B5A0_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#C4B5A0]/70 [&::-webkit-scrollbar-track]:bg-transparent">
+          {/* Search */}
+          <div className="shrink-0 px-5 py-4 border-b border-[#E5E5E5]">
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenSearch();
+              }}
+              aria-label="Search suits"
+              className="flex h-11 min-h-[44px] w-full items-center gap-3 border border-[#E5E5E5] bg-[#FAF8F5] px-3.5 font-sans text-[12px] font-medium tracking-[0.08em] uppercase text-[#6B6B6B] hover:border-black hover:text-black transition-colors rounded-full focus-visible:ring-1 focus-visible:ring-black focus-visible:outline-none"
+            >
+              <Search className="h-4 w-4 stroke-[1.5]" />
+              <span>Search suits...</span>
+            </button>
+          </div>
 
-        {/* Scrollable Main Navigation Content */}
-        <div className="flex-1 overflow-y-auto px-5 py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="px-5 py-2">
           <nav className="flex flex-col font-sans" aria-label="Mobile main navigation">
             {/* ── 1. SHOP (Accordion with rotating chevron) ── */}
             <div className="border-b border-[#E5E5E5]">
@@ -520,50 +521,47 @@ export function MobileNavDrawer({
               FAQs
             </Link>
           </div>
-        </div>
-
-        {/* ── BOTTOM BLOCK (Pinned to bottom of drawer, 1px top border, 24px gap above safe area) ── */}
-        <div className="shrink-0 mt-auto border-t border-[#E5E5E5] bg-white px-5 pt-4 flex flex-col gap-3">
-          {/* Outlined WhatsApp Button */}
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-11 min-h-[44px] w-full items-center justify-center gap-2.5 border border-black bg-white text-black hover:bg-black hover:text-white transition-colors font-sans text-[12px] font-semibold uppercase tracking-[0.08em] rounded-[8px] focus-visible:ring-1 focus-visible:ring-black focus-visible:outline-none"
-          >
-            <WhatsAppSolidGlyph className="h-5 w-5 shrink-0" />
-            <span>Order on WhatsApp</span>
-          </a>
-
-          {/* Trust Highlights Lines */}
-          <div className="flex flex-col gap-1.5 font-sans text-[12px] text-[#6B6B6B] pt-0.5">
-            <div className="flex items-center gap-2">
-              <Truck className="h-3.5 w-3.5 stroke-[1.5] text-[#6B6B6B] shrink-0" />
-              <span>Cash on delivery across Pakistan</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <RotateCcw className="h-3.5 w-3.5 stroke-[1.5] text-[#6B6B6B] shrink-0" />
-              <span>Easy 7-day returns</span>
-            </div>
           </div>
 
-          {/* Social Icons Row (Thin line icons, 20px, only for social links in footer) */}
-          <div className="flex items-center gap-2 pt-0.5">
+          {/* Bottom actions — scrolls with the menu so nothing is clipped */}
+          <div className="mt-auto border-t border-[#E5E5E5] bg-white px-5 pt-4 flex flex-col gap-3 pb-[calc(28px+env(safe-area-inset-bottom,0px))]">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="WhatsApp Care"
-              className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center text-black hover:opacity-70 transition-opacity"
+              className="flex h-11 min-h-[44px] w-full items-center justify-center gap-2.5 rounded-full border border-black bg-white text-black hover:bg-black hover:text-white transition-colors font-sans text-[12px] font-semibold uppercase tracking-[0.08em] focus-visible:ring-1 focus-visible:ring-black focus-visible:outline-none"
             >
-              <WhatsAppLineIcon className="h-5 w-5" />
+              <WhatsAppSolidGlyph className="h-5 w-5 shrink-0" />
+              <span>Order on WhatsApp</span>
             </a>
-          </div>
 
-          {/* Single small gray line (no "luxury" wording), 24px gap above safe area */}
-          <p className="font-sans text-[11px] text-[#6B6B6B] tracking-[0.02em] pb-[calc(24px+env(safe-area-inset-bottom,0px))]">
-            Hadi Collection · Unstitched suits, Pakistan
-          </p>
+            <div className="flex flex-col gap-1.5 font-sans text-[12px] text-[#6B6B6B] pt-0.5">
+              <div className="flex items-center gap-2">
+                <Truck className="h-3.5 w-3.5 stroke-[1.5] text-[#6B6B6B] shrink-0" />
+                <span>Cash on delivery across Pakistan</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <RotateCcw className="h-3.5 w-3.5 stroke-[1.5] text-[#6B6B6B] shrink-0" />
+                <span>Easy 7-day returns</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 pt-0.5">
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp Care"
+                className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-black hover:opacity-70 transition-opacity"
+              >
+                <WhatsAppLineIcon className="h-5 w-5" />
+              </a>
+            </div>
+
+            <p className="font-sans text-[11px] text-[#6B6B6B] tracking-[0.02em]">
+              Hadi Collection · Unstitched suits, Pakistan
+            </p>
+          </div>
         </div>
       </div>
     </div>

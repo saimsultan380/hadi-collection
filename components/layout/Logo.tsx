@@ -10,9 +10,9 @@ interface LogoProps {
 }
 
 const sizeConfig = {
-  sm: { width: 120, height: 72 },
-  md: { width: 168, height: 100 },
-  lg: { width: 220, height: 130 },
+  sm: { width: 120, height: 72, maxHeightClass: "max-h-[40px]" },
+  md: { width: 168, height: 100, maxHeightClass: "max-h-[56px]" },
+  lg: { width: 220, height: 130, maxHeightClass: "max-h-[72px]" },
 };
 
 export default function Logo({
@@ -36,7 +36,7 @@ export default function Logo({
         alt="Hadi Collection"
         width={config.width}
         height={config.height}
-        className="h-auto w-auto max-h-[72px] object-contain object-left shrink-0 bg-transparent"
+        className={`h-auto w-auto ${config.maxHeightClass} object-contain object-left shrink-0 bg-transparent`}
         priority
       />
       {showText && (
